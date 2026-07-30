@@ -98,7 +98,7 @@ const manifest = {
   version: packageJson.version,
   generatedAt: generatedTimestamp(),
   sourceDateEpoch: process.env.SOURCE_DATE_EPOCH ?? null,
-  node: process.version,
+  runtimeRequirements: packageJson.engines,
   assets: [],
 };
 for (const name of assetNames) {
