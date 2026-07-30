@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import zlib from "node:zlib";
 
 import { buildDemo } from "./demo.mjs";
 import { generatedTimestamp } from "../src/utils.js";
@@ -91,6 +92,11 @@ if (packed.status !== 0) {
   process.stderr.write(packed.stderr);
   process.exit(packed.status ?? 1);
 }
+const packageArchive = path.join(
+  releaseDirectory,
+  `${packageJson.name}-${packageJson.version}.tgz`,
+);
+await normalizePackageArchive(packageArchive);
 
 const assetNames = (await fs.readdir(releaseDirectory)).sort();
 const manifest = {
@@ -130,6 +136,62 @@ console.log(`Release bundle built with ${finalNames.length + 1} files.`);
 
 function sha256(buffer) {
   return crypto.createHash("sha256").update(buffer).digest("hex");
+}
+
+async function normalizePackageArchive(archivePath) {
+  const compressed = await fs.readFile(archivePath);
+  const tar = zlib.gunzipSync(compressed);
+  let offset = 0;
+  let executableSeen = false;
+  while (offset + 512 <= tar.length) {
+    const header = tar.subarray(offset, offset + 512);
+    if (header.every((value) => value === 0)) break;
+    const name = readTarText(header, 0, 100);
+    const prefix = readTarText(header, 345, 155);
+    const fullName = prefix ? `${prefix}/${name}` : name;
+    const size = readTarOctal(header, 124, 12);
+    const type = readTarText(header, 156, 1);
+    const mode =
+      fullName === "package/bin/hasstangle.js"
+        ? 0o755
+        : type === "5"
+          ? 0o755
+          : 0o644;
+    if (fullName === "package/bin/hasstangle.js") executableSeen = true;
+    writeTarOctal(header, 100, 8, mode);
+    writeTarOctal(header, 108, 8, 0);
+    writeTarOctal(header, 116, 8, 0);
+    header.fill(0x20, 148, 156);
+    const checksum = header.reduce((sum, value) => sum + value, 0);
+    const encodedChecksum = `${checksum.toString(8).padStart(6, "0")}\0 `;
+    header.write(encodedChecksum, 148, 8, "ascii");
+    offset += 512 + Math.ceil(size / 512) * 512;
+  }
+  if (!executableSeen) {
+    throw new Error("Packed archive is missing package/bin/hasstangle.js");
+  }
+  const normalized = zlib.gzipSync(tar, { level: 9, mtime: 0 });
+  normalized.fill(0, 4, 8);
+  normalized[9] = 255;
+  await fs.writeFile(archivePath, normalized);
+}
+
+function readTarText(header, offset, length) {
+  const end = header.indexOf(0, offset);
+  const limit = end >= offset && end < offset + length ? end : offset + length;
+  return header.toString("utf8", offset, limit).trim();
+}
+
+function readTarOctal(header, offset, length) {
+  const value = readTarText(header, offset, length).replace(/\0/g, "").trim();
+  const parsed = Number.parseInt(value || "0", 8);
+  if (!Number.isFinite(parsed)) throw new Error("Invalid tar size field");
+  return parsed;
+}
+
+function writeTarOctal(header, offset, length, value) {
+  const encoded = `${value.toString(8).padStart(length - 1, "0")}\0`;
+  header.write(encoded, offset, length, "ascii");
 }
 
 function assertChildPath(target) {

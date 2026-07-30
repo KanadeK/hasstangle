@@ -1,7 +1,11 @@
-# HassTangle v0.1.0
+# HassTangle v0.1.1
 
-The first public release adds an offline static analyzer and bounded replay
-engine for Home Assistant automations.
+This patch retains the complete offline analyzer and bounded replay engine from
+v0.1.0 while making report paths and package bytes reproducible across Windows
+and Linux.
+
+CI now compares the signed asset hashes from all six Windows/Linux and
+Node.js 20/22/24 builds before a change is considered green.
 
 Highlights:
 
@@ -14,9 +18,9 @@ Highlights:
 - Node.js 20/22/24 CI, CodeQL, secret scanning, checksums, and a packaged CLI.
 - CycloneDX 1.6 SBOM for the release package and its single runtime dependency.
 
-Download `hasstangle-0.1.0.tgz`, verify it with `SHA256SUMS.txt`, and install:
+Download `hasstangle-0.1.1.tgz`, verify it with `SHA256SUMS.txt`, and install:
 
 ```bash
-npm install --global ./hasstangle-0.1.0.tgz
+npm install --global ./hasstangle-0.1.1.tgz
 hasstangle --version
 ```

@@ -37,7 +37,7 @@ test("scan uses meaningful exit codes", async () => {
     tangled.io,
   );
   assert.equal(tangledCode, 1);
-  assert.match(tangled.output.stdout, /HassTangle 0.1.0/);
+  assert.match(tangled.output.stdout, /HassTangle 0.1.1/);
 
   const safe = captureIo();
   const safeCode = await runCli(

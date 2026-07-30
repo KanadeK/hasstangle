@@ -13,7 +13,7 @@ evidence and repairs, and can replay a bounded event trace to prove a feedback
 loop. It does not need a Home Assistant token and never changes your instance.
 
 ```text
-HassTangle 0.1.0
+HassTangle 0.1.1
 11 automations · 15 entities · risk 0/100
 6 errors · 6 warnings · 0 notes
 
@@ -47,7 +47,7 @@ From a GitHub Release:
 
 ```bash
 npm install --global \
-  https://github.com/KanadeK/hasstangle/releases/download/v0.1.0/hasstangle-0.1.0.tgz \
+  https://github.com/KanadeK/hasstangle/releases/download/v0.1.1/hasstangle-0.1.1.tgz \
   --registry=https://registry.npmjs.org/
 hasstangle --version
 ```
@@ -181,7 +181,7 @@ runtime timing can require manual confirmation.
 - uses: actions/setup-node@v7
   with:
     node-version: 20
-- run: npm install --global ./hasstangle-0.1.0.tgz
+- run: npm install --global ./hasstangle-0.1.1.tgz
 - run: hasstangle scan automations.yaml --fail-on error
 ```
 

@@ -85,7 +85,7 @@ npm run release:build
 
 Expected files under `release/`:
 
-- `hasstangle-0.1.0.tgz`;
+- `hasstangle-0.1.1.tgz`;
 - `hasstangle-sbom.cdx.json` (CycloneDX 1.6);
 - HTML, SARIF, Mermaid, and replay demo artifacts;
 - `release-manifest.json`;
@@ -115,20 +115,20 @@ Create a temporary directory outside the source checkout:
 ```bash
 mkdir hasstangle-smoke && cd hasstangle-smoke
 npm init -y
-npm install /path/to/hasstangle/release/hasstangle-0.1.0.tgz \
+npm install /path/to/hasstangle/release/hasstangle-0.1.1.tgz \
   --registry=https://registry.npmjs.org/
 npx hasstangle --version
 npx hasstangle rules --format json
 ```
 
 Then copy the safe fixture into the temporary directory and scan it. Expected
-version is `0.1.0`; the safe scan exits `0`.
+version is `0.1.1`; the safe scan exits `0`.
 
 If the binary is missing, inspect:
 
 ```bash
 npm pack --dry-run
-tar -tf release/hasstangle-0.1.0.tgz
+tar -tf release/hasstangle-0.1.1.tgz
 ```
 
 The archive must contain `package/bin/hasstangle.js`, `package/src/`, README,
@@ -141,8 +141,8 @@ After publication:
 ```bash
 gh repo view KanadeK/hasstangle
 gh run list --repo KanadeK/hasstangle
-gh release view v0.1.0 --repo KanadeK/hasstangle
-gh release download v0.1.0 --repo KanadeK/hasstangle --dir downloaded
+gh release view v0.1.1 --repo KanadeK/hasstangle
+gh release download v0.1.1 --repo KanadeK/hasstangle --dir downloaded
 ```
 
 Verify downloaded hashes against the downloaded `SHA256SUMS.txt`, not the local

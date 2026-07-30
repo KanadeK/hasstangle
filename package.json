@@ -1,6 +1,6 @@
 {
   "name": "hasstangle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Deterministic static analysis for Home Assistant automations: feedback loops, conflicting writes, dropped triggers, and missing entities.",
   "type": "module",
   "packageManager": "npm@11.16.0",

@@ -95,7 +95,9 @@ export function slugify(value) {
 
 export function displayPath(filePath, cwd = process.cwd()) {
   const relative = path.relative(cwd, filePath);
-  return relative && !relative.startsWith("..") ? relative : filePath;
+  const selected =
+    relative && !relative.startsWith("..") ? relative : filePath;
+  return String(selected).replaceAll("\\", "/");
 }
 
 export function stableSortObject(value) {

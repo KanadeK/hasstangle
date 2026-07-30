@@ -102,7 +102,7 @@ test("invalid registry and replay inputs fail closed", async (t) => {
 test("help, version, and rule catalog are stable CLI contracts", async () => {
   const version = captureIo();
   assert.equal(await runCli(["--version"], version.io), 0);
-  assert.equal(version.output.stdout, "0.1.0\n");
+  assert.equal(version.output.stdout, "0.1.1\n");
 
   const help = captureIo();
   assert.equal(await runCli([], help.io), 0);

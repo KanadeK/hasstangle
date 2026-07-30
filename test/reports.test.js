@@ -7,9 +7,10 @@ import {
   renderJson,
   renderSarif,
 } from "../src/reports.js";
+import { VERSION } from "../src/version.js";
 
 const report = {
-  tool: { name: "HassTangle", version: "0.1.0" },
+  tool: { name: "HassTangle", version: VERSION },
   generatedAt: "2026-07-30T00:00:00.000Z",
   summary: {
     automations: 1,
