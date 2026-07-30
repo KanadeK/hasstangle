@@ -1,0 +1,8 @@
+node_modules/
+.npm-cache/
+artifacts/
+coverage/
+release/
+*.log
+.DS_Store
+Thumbs.db

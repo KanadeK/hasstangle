@@ -1,0 +1,48 @@
+- id: office_motion_on
+  alias: Office motion on
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.office_motion
+      from: "off"
+      to: "on"
+  conditions:
+    - condition: state
+      entity_id: input_boolean.office_automation_enabled
+      state: "on"
+  actions:
+    - action: light.turn_on
+      target:
+        entity_id: light.office
+  mode: restart
+
+- id: office_motion_off
+  alias: Office motion off
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.office_motion
+      from: "on"
+      to: "off"
+      for: "00:05:00"
+  conditions:
+    - condition: state
+      entity_id: input_boolean.office_automation_enabled
+      state: "on"
+  actions:
+    - action: light.turn_off
+      target:
+        entity_id: light.office
+  mode: restart
+
+- id: leak_notice
+  alias: Leak notice
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.utility_leak
+      from: "off"
+      to: "on"
+  actions:
+    - action: notify.mobile_app_owner
+      data:
+        message: Utility-room leak detected
+  mode: parallel
+  max: 3

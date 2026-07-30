@@ -1,0 +1,60 @@
+{
+  "name": "hasstangle",
+  "version": "0.1.0",
+  "description": "Deterministic static analysis for Home Assistant automations: feedback loops, conflicting writes, dropped triggers, and missing entities.",
+  "type": "module",
+  "packageManager": "npm@11.16.0",
+  "bin": {
+    "hasstangle": "./bin/hasstangle.js"
+  },
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "format:check": "node scripts/format-check.mjs",
+    "lint": "node scripts/lint.mjs",
+    "test": "node --test",
+    "coverage": "node scripts/coverage-gate.mjs",
+    "demo": "node scripts/demo.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "secret:scan": "node scripts/secret-scan.mjs",
+    "repo:check": "node scripts/repo-check.mjs",
+    "package:check": "npm pack --dry-run",
+    "release:build": "node scripts/package-release.mjs",
+    "verify": "npm run format:check && npm run lint && npm test && npm run coverage && npm run demo && npm run secret:scan && npm run repo:check && npm run package:check && npm run benchmark"
+  },
+  "keywords": [
+    "home-assistant",
+    "automation",
+    "static-analysis",
+    "linter",
+    "yaml",
+    "smart-home",
+    "sarif"
+  ],
+  "author": "KanadeK",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KanadeK/hasstangle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KanadeK/hasstangle/issues"
+  },
+  "homepage": "https://github.com/KanadeK/hasstangle#readme",
+  "engines": {
+    "node": ">=20",
+    "npm": ">=10"
+  },
+  "dependencies": {
+    "yaml": "2.9.0"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "input_boolean.loop_a": {
+    "state": "off"
+  },
+  "input_boolean.loop_b": {
+    "state": "off"
+  },
+  "input_boolean.self_loop": {
+    "state": "off"
+  },
+  "binary_sensor.porch_motion": {
+    "state": "off"
+  },
+  "light.porch": {
+    "state": "off"
+  },
+  "binary_sensor.front_door": {
+    "state": "off"
+  },
+  "lock.front_door": {
+    "state": "unlocked"
+  },
+  "input_boolean.guests": {
+    "state": "off"
+  },
+  "sensor.living_temperature": {
+    "state": "17.5"
+  },
+  "switch.heat_pump": {
+    "state": "off"
+  },
+  "input_boolean.repeat_now": {
+    "state": "on"
+  },
+  "light.workbench": {
+    "state": "off"
+  }
+}

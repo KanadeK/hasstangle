@@ -1,0 +1,141 @@
+- id: mirror_a_to_b
+  alias: Mirror A to B
+  description: "Intentionally unsafe fixture: toggling B retriggers another automation."
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.loop_a
+  actions:
+    - action: input_boolean.toggle
+      target:
+        entity_id: input_boolean.loop_b
+  mode: parallel
+  max: 5
+
+- id: mirror_b_to_a
+  alias: Mirror B to A
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.loop_b
+  actions:
+    - action: input_boolean.toggle
+      target:
+        entity_id: input_boolean.loop_a
+  mode: parallel
+  max: 5
+
+- id: self_toggler
+  alias: Self toggler
+  trigger:
+    - platform: state
+      entity_id: input_boolean.self_loop
+  action:
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.self_loop
+
+- id: porch_timeout
+  alias: Porch timeout
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.porch_motion
+      to: "on"
+  actions:
+    - action: light.turn_on
+      target:
+        entity_id: light.porch
+    - delay:
+        minutes: 5
+    - action: light.turn_off
+      target:
+        entity_id: light.porch
+  mode: single
+  max_exceeded: silent
+
+- id: restart_lock
+  alias: Restarting door lock
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.front_door
+      to: "on"
+  actions:
+    - delay: "00:00:10"
+    - action: lock.lock
+      target:
+        entity_id: lock.front_door
+  mode: restart
+
+- id: impossible_guest_rule
+  alias: Impossible guest rule
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.guests
+      to: "on"
+  conditions:
+    - condition: state
+      entity_id: input_boolean.guests
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.guests
+      state: "off"
+  actions:
+    - action: light.turn_on
+      target:
+        entity_id: light.typo_lounge
+
+- id: heat_pump_on
+  alias: Heat pump on
+  triggers:
+    - trigger: numeric_state
+      entity_id: sensor.living_temperature
+      below: 18
+  actions:
+    - action: switch.turn_on
+      target:
+        entity_id: switch.heat_pump
+
+- id: shed_heat
+  alias: Shed heat at peak
+  triggers:
+    - trigger: time
+      at: "17:00:00"
+  actions:
+    - action: switch.turn_off
+      target:
+        entity_id: switch.heat_pump
+
+- id: guard_alpha
+  alias: Guard alpha
+  triggers:
+    - trigger: homeassistant
+      event: start
+  actions:
+    - action: automation.turn_off
+      target:
+        entity_id: automation.guard_beta
+
+- id: guard_beta
+  alias: Guard beta
+  triggers:
+    - trigger: homeassistant
+      event: start
+  actions:
+    - action: automation.turn_on
+      target:
+        entity_id: automation.guard_alpha
+
+- id: tight_repeat
+  alias: Tight repeat
+  triggers:
+    - trigger: state
+      entity_id: input_boolean.repeat_now
+      to: "on"
+  actions:
+    - repeat:
+        while:
+          - condition: state
+            entity_id: input_boolean.repeat_now
+            state: "on"
+        sequence:
+          - action: light.toggle
+            target:
+              entity_id: light.workbench

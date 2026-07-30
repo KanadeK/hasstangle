@@ -1,0 +1,35 @@
+name: Bug report
+description: Report incorrect parsing, output, or CLI behavior.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Use synthetic entities. Do not attach credentials or a real `.storage` directory.
+  - type: input
+    id: version
+    attributes:
+      label: HassTangle version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: fixture
+    attributes:
+      label: Minimal YAML/JSON fixture
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command and output
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
